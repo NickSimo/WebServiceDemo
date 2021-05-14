@@ -1,0 +1,4 @@
+GET http://localhost:8080/clients?name=Mattia
+Accept: application/json
+
+###
