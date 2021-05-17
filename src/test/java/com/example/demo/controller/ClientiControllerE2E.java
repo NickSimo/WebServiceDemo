@@ -34,8 +34,9 @@ public class ClientiControllerE2E {
     @Test
     public void estraiClientiTest() throws Exception {
         mvc.perform(get("/clienti"))
-                .andExpect(jsonPath("[0].datiAnagrafici.nome").value("Ciro"))
-                .andExpect(jsonPath("[1].cognome").value("Esposito"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[0].datiAnagrafici.nome").value("Mario"))
+                .andExpect(jsonPath("[0].datiAnagrafici.cognome").value("Rossi"));
     }
 
 
