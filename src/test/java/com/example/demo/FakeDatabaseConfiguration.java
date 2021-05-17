@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 @Configuration
-public class EndToEndConfiguration {
+public class FakeDatabaseConfiguration {
 
   @Bean
   public JdbcTemplate jdbcTemplate() {

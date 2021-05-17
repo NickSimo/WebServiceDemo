@@ -1,7 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.EndToEndConfiguration;
+import com.example.demo.FakeDatabaseConfiguration;
+import com.example.demo.entity.DatiIngresso;
 import com.example.demo.entity.DatiNuovoIngresso;
+import com.example.demo.rowmapper.DatiIngressoRowMapper;
+import com.example.demo.utility.Dates;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static com.example.demo.JsonComposer.getInputJson;
+import static com.example.demo.utility.Dates.parse;
+import static com.example.demo.utility.Dates.today;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,57 +25,58 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
-@Import(EndToEndConfiguration.class)
+@Import(FakeDatabaseConfiguration.class)
 public class IngressoRepositoryTest {
 
     @Autowired
-    private MockMvc mvc;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-
-    @Test
-    public void estraiClienti_Test() throws Exception {
-        mvc.perform(get("/clienti/elenco"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].datiAnagrafici.nome").value("Mario"))
-                .andExpect(jsonPath("[0].datiAnagrafici.cognome").value("Rossi"));
-    }
+    @Autowired
+    private IngressoRepository ingressoRepository;
 
     @Test
     public void inserimentoNuovoIngresso_Test() throws Exception {
-        DatiNuovoIngresso datiNuovoIngresso = new DatiNuovoIngresso("RSSMRO12D19L78T", "Mario Rossi");
 
-        MvcResult result = mvc.perform(post("/clienti/ingressi/nuovo")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(getInputJson(datiNuovoIngresso)))
-                .andExpect(status().isOk())
-                .andReturn();
+        ingressoRepository.inserimentoNuovoIngresso("VRDLGU80A01L781G", "Luigi Verdi", parse("2021-01-01"));
 
-        String message = result.getResponse().getContentAsString();
-        assertEquals("Ingresso per Mario Rossi avvenuto correttamente", message);
+        DatiIngresso datiIngressoInseriti = jdbcTemplate.queryForObject("SELECT * FROM Ingressi", new DatiIngressoRowMapper());
 
-        int numeroDiRecordInseriti = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Ingressi WHERE Codice_Fiscale = 'RSSMRO12D19L78T'", Integer.class);
-        assertEquals(1, numeroDiRecordInseriti);
+        assertEquals("VRDLGU80A01L781G", datiIngressoInseriti.getCodiceFiscale());
+        assertEquals("Luigi Verdi", datiIngressoInseriti.getNominativo().trim());
+        assertEquals(parse("2021-01-01"), datiIngressoInseriti.getDataIngresso());
 
     }
 
     @Test
-    public void inserimentoNuovoIngresso_IngressoGiaAvvenuto_Test() throws Exception {
-        DatiNuovoIngresso datiNuovoIngresso = new DatiNuovoIngresso("VRDLGU80A01L781G", "Luigi Verdi");
+    public void estrazioneIngressoGiornaliero_EstrazioneCorretta() throws Exception {
 
-        MvcResult result = mvc.perform(post("/clienti/ingressi/nuovo")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(getInputJson(datiNuovoIngresso)))
-                .andExpect(status().isOk())
-                .andReturn();
+        jdbcTemplate.update("INSERT INTO Ingressi\n" +
+                "VALUES\n" +
+                "(\n" +
+                "    'GLLSDR80A01L781Y',\n" +
+                "    'Sandro Gialli',\n" +
+                "    CURRENT_DATE \n" +
+                ")");
 
-        String message = result.getResponse().getContentAsString();
-        assertEquals("Ingresso gia avvenuto in data odierna", message);
+        ingressoRepository.estrazioneIngressoGiornaliero("GLLSDR80A01L781Y");
+
+        DatiIngresso datiIngressoEstratti = jdbcTemplate.queryForObject("SELECT * FROM Ingressi WHERE Codice_Fiscale = 'GLLSDR80A01L781Y'", new DatiIngressoRowMapper());
+
+        assertEquals("GLLSDR80A01L781Y", datiIngressoEstratti.getCodiceFiscale());
+        assertEquals("Sandro Gialli", datiIngressoEstratti.getNominativo().trim());
+        assertEquals(today(), datiIngressoEstratti.getDataIngresso());
+
     }
 
+    @Test
+    public void estrazioneIngressoGiornaliero_NessunRecordPresente() throws Exception {
 
+        ingressoRepository.estrazioneIngressoGiornaliero("GLLSDR80A01L781Y");
+
+        int datiIngressoEstratti = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Ingressi WHERE Codice_Fiscale = 'GLLSDR80A01L781Y'", Integer.class);
+
+        assertEquals(0, datiIngressoEstratti);
+
+    }
 
 
 }

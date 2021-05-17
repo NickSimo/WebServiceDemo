@@ -85,26 +85,26 @@ VALUES
     'Italia'
 );
 
-INSERT INTO Ingressi
-VALUES
-(
-    'RSSMRA80A01L781K',
-    'Mario Rossi',
-    '2021-05-14'
-),
-(
-    'VRDLGU80A01L781G',
-    'Luigi Verdi',
-    '2021-05-14'
-),
-(
-    'GLLSDR80A01L781Y',
-    'Sandro Gialli',
-    '2021-05-17'
-),
-(
-    'VRDLGU80A01L781G',
-    'Luigi Verdi',
-    CURRENT_DATE
-)
-;
+--INSERT INTO Ingressi
+--VALUES
+--(
+--    'RSSMRA80A01L781K',
+--    'Mario Rossi',
+--    '2021-05-14'
+--),
+--(
+--    'VRDLGU80A01L781G',
+--    'Luigi Verdi',
+--    '2021-05-14'
+--),
+--(
+--    'GLLSDR80A01L781Y',
+--    'Sandro Gialli',
+--    '2021-05-17'
+--),
+--(
+--    'VRDLGU80A01L781G',
+--    'Luigi Verdi',
+--    CURRENT_DATE
+--)
+--;

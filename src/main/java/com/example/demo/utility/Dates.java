@@ -19,4 +19,12 @@ public class Dates {
     public static String format(Date date) {
         return yyyyMMdd.format(date);
     }
+
+    public static Date parse(String date) {
+        try {
+            return yyyyMMdd.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
