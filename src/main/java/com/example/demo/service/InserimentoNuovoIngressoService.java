@@ -1,18 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Cliente;
 import com.example.demo.entity.DatiIngresso;
-import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.IngressoRepository;
-import com.example.demo.service.utility.Dates;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-
-import static com.example.demo.service.utility.Dates.today;
+import static com.example.demo.utility.Dates.today;
 
 @Service
 @RequiredArgsConstructor

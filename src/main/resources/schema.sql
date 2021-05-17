@@ -16,3 +16,10 @@ CREATE TABLE clienti
     numero_carta_identita VARCHAR(30),
     nazione               VARCHAR(30)
 );
+
+CREATE TABLE Ingressi
+(
+    Codice_Fiscale        CHAR(16),
+    Nominativo            CHAR(50),
+    Data_Ingresso         DATE
+);
