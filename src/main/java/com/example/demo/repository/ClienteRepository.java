@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Cliente;
-import com.example.demo.rowmapper.ClienteRowMapper;
+import com.example.demo.entity.rowmapper.ClienteRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,5 +24,9 @@ public class ClienteRepository {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    public Cliente estrazioneCliente(String codiceFiscale) {
+        return new Cliente();
     }
 }

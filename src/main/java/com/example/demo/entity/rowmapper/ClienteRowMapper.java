@@ -1,4 +1,4 @@
-package com.example.demo.rowmapper;
+package com.example.demo.entity.rowmapper;
 
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.DatiAnagrafici;
