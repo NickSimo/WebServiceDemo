@@ -16,10 +16,12 @@ import org.springframework.test.context.ContextConfiguration;
 public class ClienteRepositoryTest {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private ClienteRepository clienteRepository;
+
+
 
     @Test
     public void estrazionePerCodiceFiscale_Test(){
