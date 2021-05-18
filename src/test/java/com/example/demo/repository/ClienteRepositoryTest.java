@@ -21,9 +21,7 @@ public class ClienteRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private ClienteRepository clienteRepository = new ClienteRepository(jdbcTemplate);
-
-
+    private ClienteRepository clienteRepository;
 
     @Test
     public void estrazionePerCodiceFiscale_Test(){
