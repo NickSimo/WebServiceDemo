@@ -2,9 +2,11 @@ package com.example.demo.repository;
 
 import com.example.demo.FakeDatabaseConfiguration;
 import com.example.demo.entity.Cliente;
+import com.example.demo.repository.ClienteRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -19,7 +21,7 @@ public class ClienteRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository = new ClienteRepository(jdbcTemplate);
 
 
 
