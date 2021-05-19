@@ -16,9 +16,6 @@ public class ClienteRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-
-
-
     public List<Cliente> estraiTuttiIClienti() {
         try {
             return jdbcTemplate.query("SELECT * FROM clienti", new ClienteRowMapper());
@@ -26,6 +23,17 @@ public class ClienteRepository {
             return null;
         }
     }
+
+
+    public Cliente estrazioneClientePerCodiceFiscale(String codiceFiscale) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Clienti WHERE codice_fiscale = '"+codiceFiscale+"'", new ClienteRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
 
 }

@@ -14,9 +14,31 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class ClienteRepositoryTest {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    ClienteRepository clienteRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    JdbcTemplate jdbcTemplate;
 
+    @Test
+    public void estrazioneClientePerCodiceFiscale_OK_Test() {
+
+        jdbcTemplate.update("INSERT INTO clienti VALUES (1, 'Mario', 'Rossi', 'AAA', 'Via dei mille 10')");
+
+        Cliente cliente = clienteRepository.estrazioneClientePerCodiceFiscale("AAA");
+
+        Assert.assertEquals("AAA", cliente.getCodice_fiscale());
+        Assert.assertEquals("Mario", cliente.getNome());
+        Assert.assertEquals("Rossi", cliente.getCognome());
+        Assert.assertEquals("Via dei mille 10", cliente.getIndirizzo_residenza());
+    }
+
+    @Test
+    public void estrazioneClientePerCodiceFiscale_RecordNonTrovato_Test() {
+
+        jdbcTemplate.update("INSERT INTO clienti VALUES (1, 'Mario', 'Rossi', 'AAA', 'Via dei mille 10')");
+
+        Cliente cliente = clienteRepository.estrazioneClientePerCodiceFiscale("BBB");
+
+        Assert.assertNull(cliente);
+    }
 }

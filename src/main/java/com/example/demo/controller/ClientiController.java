@@ -22,4 +22,9 @@ public class ClientiController {
         return estraiClientiService.estraiTuttiIClienti();
     }
 
+    @GetMapping(value = "/estrazione-per-cf")
+    public Cliente estrazioneClientePerCodiceFiscale(@RequestParam String cf) {
+        return estraiClientiService.estrazionePerCodiceFiscale(cf);
+    }
+
 }
