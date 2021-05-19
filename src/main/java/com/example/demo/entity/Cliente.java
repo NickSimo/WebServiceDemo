@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Cliente {
     private Long id;
-    private Recapiti recapiti = new Recapiti();
-    private DatiAnagrafici datiAnagrafici = new DatiAnagrafici();
-    private Normativa normativa = new Normativa();
+    private String nome;
+    private String cognome;
+    private String codice_fiscale;
+    private String indirizzo_residenza;
 }

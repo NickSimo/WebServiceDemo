@@ -27,13 +27,5 @@ public class ClienteRepository {
         }
     }
 
-    public Cliente estrazionePerCodiceFiscale(String cf) {
-        try{
-            return jdbcTemplate.queryForObject(
-                "SELECT * FROM clienti WHERE codice_fiscale = '" +cf+"'",
-                new ClienteRowMapper());}
-        catch (EmptyResultDataAccessException e){
-            return null;
-        }
-    }
+
 }

@@ -35,12 +35,6 @@ public class ClientiControllerE2E {
                 .andExpect(jsonPath("[0].datiAnagrafici.cognome").value("Rossi"));
     }
 
-    @Test
-    public void estrazioneClientePerCodiceFiscale_Test() throws Exception {
-        mvc.perform(get("/clienti/estrazione?cf=AAAA"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("datiAnagrafici.nome").value("Mario"));
-    }
 
 
 
