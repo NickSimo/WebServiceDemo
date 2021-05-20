@@ -2,7 +2,6 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.Cliente;
 import com.example.demo.entity.rowmapper.ClienteRowMapper;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
