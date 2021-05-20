@@ -2,7 +2,7 @@
 
 Creare un nuovo endpoint **GET** _/clienti/estrazione-per-cf_ che accetta in input una _String_ "cf" ed estrare il cliente corrispondente nella tabella _Clienti_.
 
-**Passaggi**
+**Sviluppo**
 
 1) Creare un metodo in _ClienteRepository_ che utilizza la seguente query per estrarre il cliente
 
