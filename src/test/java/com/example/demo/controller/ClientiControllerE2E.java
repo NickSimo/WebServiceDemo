@@ -35,21 +35,7 @@ public class ClientiControllerE2E {
                 .andExpect(jsonPath("[0].datiAnagrafici.cognome").value("Rossi"));
     }
 
-    @Test
-    public void estrazioneClientePerCodiceFiscale_Ok_Test() throws Exception {
-        mvc.perform(get("/clienti/estrazione-per-cf?cf=RSSMRO12D19L78T"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("nome").value("Mario"))
-                .andExpect(jsonPath("cognome").value("Rossi"))
-                .andExpect(jsonPath("codice_fiscale").value("RSSMRO12D19L78T"))
-                .andExpect(jsonPath("indirizzo_residenza").value("via alberto dominutti 6"));
-    }
 
-    @Test
-    public void estrazioneClientePerCodiceFiscale_Ko_Test() throws Exception {
-        mvc.perform(get("/clienti/estrazione-per-cf?cf="))
-                .andExpect(status().isInternalServerError());
-    }
 
 
 

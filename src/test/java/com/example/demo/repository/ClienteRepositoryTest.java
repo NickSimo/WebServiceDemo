@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 @SpringBootTest
 @Import(FakeDatabaseConfiguration.class)
 public class ClienteRepositoryTest {
@@ -20,25 +22,11 @@ public class ClienteRepositoryTest {
     JdbcTemplate jdbcTemplate;
 
     @Test
-    public void estrazioneClientePerCodiceFiscale_OK_Test() {
+    public void estrazioneClienti_5Clienti_Test() {
 
-        jdbcTemplate.update("INSERT INTO clienti VALUES (1, 'Mario', 'Rossi', 'AAA', 'Via dei mille 10')");
+        List<Cliente> clienti = clienteRepository.estraiTuttiIClienti();
 
-        Cliente cliente = clienteRepository.estrazioneClientePerCodiceFiscale("AAA");
-
-        Assert.assertEquals("AAA", cliente.getCodice_fiscale());
-        Assert.assertEquals("Mario", cliente.getNome());
-        Assert.assertEquals("Rossi", cliente.getCognome());
-        Assert.assertEquals("Via dei mille 10", cliente.getIndirizzo_residenza());
+        Assert.assertEquals(5,clienti.size());
     }
 
-    @Test
-    public void estrazioneClientePerCodiceFiscale_RecordNonTrovato_Test() {
-
-        jdbcTemplate.update("INSERT INTO clienti VALUES (1, 'Mario', 'Rossi', 'AAA', 'Via dei mille 10')");
-
-        Cliente cliente = clienteRepository.estrazioneClientePerCodiceFiscale("BBB");
-
-        Assert.assertNull(cliente);
-    }
 }

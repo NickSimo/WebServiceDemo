@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Cliente;
-import com.example.demo.exception.InputErratoException;
 import com.example.demo.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +18,7 @@ public class EstraiClientiService {
         return clienteRepository.estraiTuttiIClienti();
     }
 
-    public Cliente estrazionePerCodiceFiscale(String codiceFiscale) {
-        if (codiceFiscale == null || codiceFiscale == "") {
-            throw new InputErratoException();
-        } else {
-            return clienteRepository.estrazioneClientePerCodiceFiscale(codiceFiscale);
-        }
-    }
+
 
 
 }
