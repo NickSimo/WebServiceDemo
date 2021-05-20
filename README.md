@@ -27,6 +27,6 @@ Creare un nuovo endpoint **GET** _/clienti/estrazione-per-cf_ che accetta in inp
 2) Testare con dei test di Integrazione il metodo in _ClienteRepository_
     2) Testiamo il metodo estraendo un record esistente e controllando i valori del cliente
     2) Testiamo il metodo provando ad estrarre un record che non esiste e ci aspettiamo null
-3) Testare con dei test End to End l'enpoint in _ClienteController_
+3) Testare con dei test End to End l'endpoint in _ClienteController_
     3) Testiamo l'endpoint con un codice fiscale esistente, controlliamo i dati e lo stato http 200
     3) Testiamo l'endpoint non valorizzando l'input, controlliamo lo stato http 500
