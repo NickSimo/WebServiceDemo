@@ -29,4 +29,23 @@ public class ClienteRepositoryTest {
         Assert.assertEquals(5,clienti.size());
     }
 
+    @Test
+    public void estrazioneClientePerCodiceFiscale_RecordTrovato_Test(){
+
+        Cliente clienteEstratto = clienteRepository.estrazioneClientePerCodiceFiscale("RSSMRO12D19L78T");
+
+        Assert.assertEquals("Mario", clienteEstratto.getNome());
+        Assert.assertEquals("Rossi", clienteEstratto.getCognome());
+        Assert.assertEquals("RSSMRO12D19L78T", clienteEstratto.getCodice_fiscale());
+        Assert.assertEquals("via alberto dominutti 6", clienteEstratto.getIndirizzo_residenza());
+    }
+
+    @Test
+    public void estrazioneClientePerCodiceFiscale_RecordNonTrovato_Test(){
+
+        Cliente clienteEstratto = clienteRepository.estrazioneClientePerCodiceFiscale("BBB");
+
+        Assert.assertNull(clienteEstratto);
+    }
+
 }
