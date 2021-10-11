@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.entity.DatiNuovoIngresso;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
