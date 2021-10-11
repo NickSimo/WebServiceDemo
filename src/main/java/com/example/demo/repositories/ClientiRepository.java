@@ -30,4 +30,22 @@ public class ClientiRepository {
       return null;
     }
   }
+
+  public String salvaCliente(Cliente cliente) {
+    try {
+      jdbcTemplate.execute(Query.inserimentoNuovoCliente(cliente));
+      return "Il Cliente è stato inserito correttamente";
+    } catch (Exception e) {
+      return "errore";
+    }
+  }
+
+  public Cliente estraiPerNomeECognome(String nome, String cognome) {
+    try {
+      return jdbcTemplate.queryForObject(
+          Query.inserimentoPerNomeECognome(nome, cognome), new ClientiRowMapper());
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
+  }
 }

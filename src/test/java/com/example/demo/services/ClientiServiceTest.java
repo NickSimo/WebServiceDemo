@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -22,20 +22,53 @@ public class ClientiServiceTest {
   private ClientiRepository clientiRepository = Mockito.mock(ClientiRepository.class);
 
   @Test
-  public void estrazioneClienti_estrazioneAvvenutaConSuccesso(){
+  public void estrazioneClienti_estrazioneAvvenutaConSuccesso() {
     when(clientiRepository.estraiClienti()).thenReturn(inizializzaLista());
     List<Cliente> clienti = clientiRepository.estraiClienti();
     assertThat(clienti.size()).isGreaterThan(0);
   }
 
   @Test
-  public void estrazioneCliente_estrazioneAvvenutaConSuccesso(){
-    when(clientiRepository.estraiCliente(anyString())).thenReturn(inizializzaClienteTest());
+  public void estrazioneCliente_estrazioneAvvenutaConSuccesso() {
+    when(clientiRepository.estraiCliente("RSSMRO12D19L78T")).thenReturn(inizializzaClienteTest());
     Cliente clienti = clientiRepository.estraiCliente("RSSMRO12D19L78T");
     assertThat(clienti.getId()).isEqualTo(1);
   }
 
-  private Cliente inizializzaClienteTest(){
+  @Test
+  public void salvaCliente_ilClienteVieneAggiunto() {
+    ClientiService clientiService = new ClientiService(clientiRepository);
+    when(clientiRepository.salvaCliente(any())).thenReturn("success");
+    String risposta = clientiService.salvaCliente(inizializzaClienteTest());
+    assertThat(risposta).isEqualTo("success");
+  }
+
+  @Test
+  public void salvaCliente_ilClienteVieneNonAggiunto() {
+    when(clientiRepository.salvaCliente(any())).thenReturn("error");
+    String risposta = clientiRepository.salvaCliente(inizializzaClienteTest());
+    assertThat(risposta).isEqualTo("error");
+  }
+
+  @Test
+  public void estraiClientePerNomeECognome_vieneEstrattoIlCliente() {
+    ClientiService clientiService = new ClientiService(clientiRepository);
+    when(clientiRepository.estraiPerNomeECognome("mario", "rossi"))
+        .thenReturn(inizializzaClienteTest());
+    Cliente clienteEstratto = clientiService.estraiPerNomeECognome("mario", "rossi");
+    assertThat(clienteEstratto).isNotNull();
+  }
+
+  @Test
+  public void estraiClientePerNomeECognome_nonVieneEstrattoIlCliente() {
+    ClientiService clientiService = new ClientiService(clientiRepository);
+    when(clientiRepository.estraiPerNomeECognome("mario", "rossi"))
+        .thenReturn(inizializzaClienteTest());
+    Cliente clienteEstratto = clientiService.estraiPerNomeECognome("pippo", "pluto");
+    assertThat(clienteEstratto).isNull();
+  }
+
+  private Cliente inizializzaClienteTest() {
     Cliente cliente = new Cliente();
     cliente.setId(1L);
     Normativa normativa = new Normativa();
@@ -53,15 +86,14 @@ public class ClientiServiceTest {
     datiAnagrafici.setCognome("Rossi");
     datiAnagrafici.setNome("mario");
     datiAnagrafici.setCodice_fiscale("RSSMRO12D19L78T");
-    datiAnagrafici.setData_nascita(new Date(1997,7,10));
-     cliente.setDatiAnagrafici(datiAnagrafici);
-     return cliente;
+    datiAnagrafici.setData_nascita(new Date(1997, 7, 10));
+    cliente.setDatiAnagrafici(datiAnagrafici);
+    return cliente;
   }
 
-  private List<Cliente> inizializzaLista(){
+  private List<Cliente> inizializzaLista() {
     List<Cliente> clienti = new ArrayList<>();
     clienti.add(inizializzaClienteTest());
     return clienti;
   }
-
 }
