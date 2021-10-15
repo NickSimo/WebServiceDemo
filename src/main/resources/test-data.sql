@@ -17,7 +17,7 @@ VALUES
 (
     'Mario',
     'Rossi',
-    'RSSMRO12D19L78T',+
+    'RSSMRO12D19L78W',+
     '1999-12-31',
     'via alberto dominutti 6',
     'Verona',
@@ -29,7 +29,7 @@ VALUES
     'Italia'
 ),
 (
-    'Ciro',
+    ' ',
     'Esposito',
     'CROSPS12D19L78T',
     '1980-10-10',

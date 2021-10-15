@@ -2,8 +2,6 @@ package com.example.demo.repositories;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-
-
 import com.example.demo.FakeDatabaseConfiguration;
 import com.example.demo.dto.Cliente;
 import com.example.demo.dto.DatiAnagrafici;
@@ -66,15 +64,39 @@ public class ClientiRepositoryTest {
   }
 
   @Test
-  public void estrazionePerNomeECognome_ritornoCodiceFiscale(){
-    Cliente cliente = clientiRepository.estraiPerNomeECognome("Ciro","Esposito");
+  public void estrazionePerNomeECognome_ritornoCodiceFiscale() {
+    Cliente cliente = clientiRepository.estraiPerNomeECognome("Ciro", "Esposito");
     assertThat(cliente.getDatiAnagrafici().getCodice_fiscale()).isEqualTo("CROSPS12D19L78T ");
   }
 
   @Test
-  public void estrazionePerNomeECognome_nonRitornoCodiceFiscale(){
-    Cliente cliente = clientiRepository.estraiPerNomeECognome("Marco","Esposito");
+  public void estrazionePerNomeECognome_nonRitornoCodiceFiscale() {
+    Cliente cliente = clientiRepository.estraiPerNomeECognome("Marco", "Esposito");
     assertThat(cliente).isNull();
+  }
+
+  @Test
+  public void aggiornaIndirizzo_indirizzoAggiornato() {
+    Cliente cliente = inizializzaClienteTest();
+    clientiRepository.salvaCliente(cliente);
+    Recapiti recapito = inizializzaRecapitoTest();
+    clientiRepository.aggiornaRecapito(recapito, cliente.getDatiAnagrafici().getCodice_fiscale());
+    Cliente clienteEstratto =
+        clientiRepository.estraiCliente(cliente.getDatiAnagrafici().getCodice_fiscale());
+
+    assertThat(clienteEstratto.getRecapiti().getComune_residenza()).isEqualTo("Sirmione");
+    assertThat(clienteEstratto.getRecapiti().getIndirizzo_residenza()).isEqualTo("acque");
+  }
+
+  private Recapiti inizializzaRecapitoTest() {
+    Recapiti recapiti = new Recapiti();
+    recapiti.setComune_residenza("Sirmione");
+    recapiti.setFl_domicilio_estero(false);
+    recapiti.setNazione("it");
+    recapiti.setComune_domicilio("Lazise");
+    recapiti.setIndirizzo_domicilio("acque");
+    recapiti.setIndirizzo_residenza("acque");
+    return recapiti;
   }
 
   private Cliente inizializzaClienteTest() {

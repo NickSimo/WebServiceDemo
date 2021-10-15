@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.dto.Cliente;
+import com.example.demo.dto.Recapiti;
 import com.example.demo.mappers.ClientiRowMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -48,4 +49,13 @@ public class ClientiRepository {
       return null;
     }
   }
+
+  public String aggiornaRecapito(Recapiti recapito, String codice_fiscale) {
+    int recordAggiornati = jdbcTemplate.update(Query.aggiornaRecapito(recapito, codice_fiscale));
+    if (recordAggiornati == 1) {
+      return "aggiornamento effettuato con successo";
+    }
+    return "aggiornamento non riuscito";
+  }
+
 }

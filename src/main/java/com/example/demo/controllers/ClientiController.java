@@ -1,6 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.Cliente;
+import com.example.demo.dto.Recapiti;
+import com.example.demo.exceptions.ValidazioneException;
 import com.example.demo.services.ClientiService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +28,33 @@ public class ClientiController {
 
   @PostMapping(value = "/aggiungi")
   public String aggiungiCliente(@RequestBody Cliente cliente) {
-    return clientiService.salvaCliente(cliente);
+    try {
+      return clientiService.salvaCliente(cliente);
+    } catch (ValidazioneException eccezione) {
+      return eccezione
+          .getLivello()
+          .concat(" ")
+          .concat(eccezione.getMessage())
+          .concat(" ")
+          .concat(eccezione.getCampoErrore());
+    }
   }
 
   @GetMapping(value = "/estrazione")
   public Cliente estraiCliente(@RequestParam String nome, @RequestParam String cognome) {
     return clientiService.estraiPerNomeECognome(nome, cognome);
+  }
+
+  @PostMapping(value = "/aggiornaRecapito")
+  public String aggiornaRecapito(@RequestBody Recapiti recapiti, @RequestParam String codiceFiscale) {
+
+    return clientiService.aggiornaRecapito(recapiti, codiceFiscale);
+  }
+
+  @PostMapping(value = "/isMaggiorenne")
+  public String isMaggiorenne(@RequestBody Cliente cliente) {
+
+      return clientiService.isMaggiorenne(cliente.getDatiAnagrafici().getCodice_fiscale());
+
   }
 }
