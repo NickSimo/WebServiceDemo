@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-
 import com.example.demo.dto.Cliente;
 import com.example.demo.dto.DatiAnagrafici;
 import com.example.demo.dto.Normativa;
@@ -27,11 +25,9 @@ import org.springframework.test.web.servlet.MvcResult;
 @Import(FakeDatabaseConfiguration.class)
 public class EntrataControllerE2E {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  JdbcTemplate jdbcTemplate;
+  @Autowired JdbcTemplate jdbcTemplate;
 
   @Test
   public void inserimentoEntrata_conUrlCorretto_LaRispostaEOk() throws Exception {
@@ -49,7 +45,8 @@ public class EntrataControllerE2E {
 
     int numeroDiRecordInseriti =
         jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM ingressi WHERE codice_fiscale = 'RSSMRO12D19L799'", Integer.class);
+            "SELECT COUNT(*) FROM ingressi WHERE codice_fiscale = 'RSSMRO12D19L799'",
+            Integer.class);
     assertEquals(1, numeroDiRecordInseriti);
   }
 
@@ -68,13 +65,13 @@ public class EntrataControllerE2E {
   @Test
   public void EliminazioneEntrata_conUrlScorretto_LaRispostaEKo() throws Exception {
 
-        mockMvc
-            .perform(
-                post("/entrate/entra")
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(JsonComposer.getInputJson(inizializzaClienteTest())))
-            .andExpect(status().isOk())
-            .andReturn();
+    mockMvc
+        .perform(
+            post("/entrate/entra")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(JsonComposer.getInputJson(inizializzaClienteTest())))
+        .andExpect(status().isOk())
+        .andReturn();
 
     MvcResult result =
         mockMvc
@@ -87,9 +84,32 @@ public class EntrataControllerE2E {
 
     int numeroDiRecordInseriti =
         jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM ingressi WHERE codice_fiscale = 'RSSMRO12D19L799'", Integer.class);
+            "SELECT COUNT(*) FROM ingressi WHERE codice_fiscale = 'RSSMRO12D19L799'",
+            Integer.class);
 
     assertThat(numeroDiRecordInseriti).isZero();
+  }
+
+  @Test
+  public void EliminazioneEntrata_recapitoCorretto_LaRispostaEOk() throws Exception {
+    Cliente cliente = inizializzaClienteTest();
+    cliente.getDatiAnagrafici().setCodice_fiscale("RSSMRO12D19L78W");
+
+    MvcResult result =
+        mockMvc
+            .perform(
+                post("/entrate/entra")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(JsonComposer.getInputJson(cliente)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    int numeroDiRecordInseriti =
+        jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM ingressi WHERE codice_fiscale = 'RSSMRO12D19L78W'",
+            Integer.class);
+
+    assertThat(numeroDiRecordInseriti).isEqualTo(1);
   }
 
   private Cliente inizializzaClienteTest() {
@@ -114,5 +134,4 @@ public class EntrataControllerE2E {
     cliente.setDatiAnagrafici(datiAnagrafici);
     return cliente;
   }
-
 }
