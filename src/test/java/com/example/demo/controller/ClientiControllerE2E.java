@@ -51,6 +51,12 @@ public class ClientiControllerE2E {
                 .andExpect(status().isInternalServerError());
     }
 
+    @Test
+    public void a() throws Exception {
+        mvc.perform(get("/clienti/test/1"))
+           .andExpect(status().isOk());
+    }
+
 
 
 
